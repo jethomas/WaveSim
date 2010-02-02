@@ -15,3 +15,4 @@ executable:          WaveSim
 main-is:             WaveSim.hs
 ghc-options:         -Wall
 hs-source-dirs:      src
+build-depends:       OpenGL >= 2.4, GLUT >= 2.2.2, base > 4

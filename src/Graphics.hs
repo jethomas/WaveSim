@@ -10,21 +10,21 @@ import Graphics.Rendering.OpenGL as GL
 import ThemeSettings
 
 initWindow :: Size -> [Char] -> IO ()
-initWindow windowSize windowTitle = do
-   getArgsAndInitialize
-   initialWindowSize $= windowSize
-   initalDisplayMode $= [DoubleBuffered]
-   createWindow windowTitle
+initWindow winSize winTitle = do
+   _ <- getArgsAndInitialize
+   initialWindowSize $= winSize
+   initialDisplayMode $= [DoubleBuffered]
+   _ <- createWindow winTitle
    return ()
 
-initGraphics :: GLdouble -> Gldouble -> IO ()
-initGraphics = screenWidth screenHeight = do
+initGraphics :: GLdouble -> GLdouble -> IO ()
+initGraphics screenWidth screenHeight = do
    blend $= Enabled
    blendFunc $= (GL.SrcAlpha, OneMinusSrcAlpha)
    shadeModel $= Smooth
    matrixMode $= Projection
    loadIdentity
-   orth 0.0 screenWidth 0.0 screenHeight (-1.0) 0.0
+   ortho 0.0 screenWidth 0.0 screenHeight (-1.0) 0.0
    return ()
 
 beginDraw :: IO ()

@@ -5,11 +5,10 @@ module DisplaySettings
     refreshRate) where
 
 import Graphics.UI.GLUT
-import Graphics.Rendering.OpenGL
 
 -- Export in a format GLUT likes
 winSize :: Size
-winSize = Size (truncate winHeight) (truncate winWidth)
+winSize = Size (truncate winWidth) (truncate winHeight)
 
 -- Height of the main window
 winHeight :: GLdouble

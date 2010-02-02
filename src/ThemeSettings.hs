@@ -1,5 +1,7 @@
 module ThemeSettings
    (font) where
 
-font :: Font
-font = BitmapFont Helvetica12
+import Graphics.UI.GLUT as GLUT
+
+font :: BitmapFont
+font = Helvetica12
