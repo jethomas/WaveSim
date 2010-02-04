@@ -5,7 +5,8 @@ module Graphics
     endDraw,
     drawString,
     loadTexture,
-    drawTexture) where
+    drawTexture,
+    drawRect) where
 
 import Graphics.UI.GLUT as GLUT
 import Graphics.Rendering.OpenGL as GL
@@ -43,8 +44,8 @@ endDraw = do
    swapBuffers
    flush
 
-drawString :: GLfloat -> GLfloat -> [Char] -> Color4 GLfloat -> IO ()
-drawString x y string col = do
+drawString :: (GLfloat, GLfloat) -> [Char] -> Color4 GLfloat -> IO ()
+drawString (x, y) string col = do
    color col
    currentRasterPosition $= Vertex4 x y (0.0::GLfloat) (1.0::GLfloat)
    renderString ThemeSettings.font string
@@ -77,8 +78,8 @@ freeTexture :: WTexture -> IO ()
 freeTexture tex = do
    deleteObjectNames ([textureObject tex])
 
-drawTexture :: GLdouble -> GLdouble -> GLdouble -> GLdouble -> WTexture -> GLdouble -> IO ()
-drawTexture x y w h tex alpha = do
+drawTexture :: (GLdouble, GLdouble, GLdouble, GLdouble) -> WTexture -> GLdouble -> IO ()
+drawTexture (x, y, w, h) tex alpha = do
    texture Texture2D $= Enabled
    textureBinding Texture2D $= Just (textureObject tex)
 
@@ -97,8 +98,19 @@ drawTexture x y w h tex alpha = do
    renderPrimitive Quads $ do
       texCoord2f (TexCoord2 0 1); vertex3f (Vertex3 x y 0.0); col
       texCoord2f (TexCoord2 0 0); vertex3f (Vertex3 x (y + height) 0.0); col
-      texCoord2f (TexCoord2 1 0); vertex3f (Vertex3 (x + width) y 0.0); col
-      texCoord2f (TexCoord2 1 1); vertex3f (Vertex3 (x + width) (y + height) 0.0); col
+      texCoord2f (TexCoord2 1 0); vertex3f (Vertex3 (x + width) (y + height) 0.0); col
+      texCoord2f (TexCoord2 1 1); vertex3f (Vertex3 (x + width) y 0.0); col
 
    texture Texture2D $= Disabled
+
+drawRect :: (GLdouble, GLdouble, GLdouble, GLdouble) -> Color4 GLdouble -> IO ()
+drawRect (x, y, w, h) col = do
+   let vertices = [Vertex3 x y 0.0,
+                   Vertex3 (x + w) y 0.0,
+                   Vertex3 (x + w) (y + h) 0.0,
+                   Vertex3 x (y + h) 0.0]
+
+   renderPrimitive Quads $ do
+      mapM_ (\x' -> color x') [col]
+      mapM_ (\x' -> vertex x') vertices
 
