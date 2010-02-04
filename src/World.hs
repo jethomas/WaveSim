@@ -1,16 +1,9 @@
 module World
-   (worldInit,
-    ProgramState(MainMenuState,TwoDWaveState,ThreeDWaveState),
-    WorldState(WorldState)) where
+   (worldInit) where
 
-data ProgramState = MainMenuState | TwoDWaveState | ThreeDWaveState
-
-data WorldState = WorldState
-   {
-      programState   :: ProgramState
-   }
+import Types
 
 worldInit :: IO (WorldState)
 worldInit = do
-   return (WorldState MainMenuState)
+   return (WorldState MainMenuState Nothing)
 

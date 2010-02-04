@@ -4,11 +4,8 @@ module Graphics
     beginDraw,
     endDraw,
     drawString,
-    WTexture(WTexture),
-    textureWidth,
-    textureHeight,
-    textureObject,
-    drawRect) where
+    loadTexture,
+    drawTexture) where
 
 import Graphics.UI.GLUT as GLUT
 import Graphics.Rendering.OpenGL as GL
@@ -17,13 +14,7 @@ import Graphics.UI.SDL.Video
 import Graphics.UI.SDL.Types
 import Control.Monad
 import ThemeSettings
-
-data WTexture = WTexture
-   {
-      textureWidth   :: GLsizei,
-      textureHeight  :: GLsizei,
-      textureObject  :: TextureObject
-   }
+import Types
 
 initWindow :: Size -> [Char] -> IO ()
 initWindow winSize winTitle = do

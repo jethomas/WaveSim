@@ -21,3 +21,4 @@ winWidth = 800.0
 -- In milliseconds
 refreshRate :: Int
 refreshRate = 16
+

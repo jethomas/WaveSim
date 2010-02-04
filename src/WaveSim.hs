@@ -9,6 +9,7 @@ import Data.IORef
 import Graphics
 import DisplaySettings
 import World
+import Menu
 
 main :: IO ()
 main = do
@@ -22,8 +23,7 @@ main = do
    --keyboardMouseCallback $= Just (worldInput (keysStateRef worldState))
    --motionCallback $= Just (worldMotion (mousePosRef worldState))
    --passiveMotionCallback $= Just (worldMotion (mousePosRef worldState))
-
-   --addTimerCallback 1 (programMain worldStateRef)
+   enterMainMenu worldStateRef drawMainMenu
 
    mainLoop
 
