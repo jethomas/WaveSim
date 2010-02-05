@@ -12,17 +12,24 @@ module Types
     lrRectPoint,
     llRectPoint,
     ProgramState(MainMenuState,TwoDWaveState,ThreeDWaveState),
-    WorldState(WorldState),
-    configData,
-    programState,
-    menuState,
     MenuState(MenuState),
     backTexture,
     twoDButton,
-    threeDButton) where
+    threeDButton,
+    Config(Config),
+    fontName,
+    winHeight,
+    winWidth,
+    winSize,
+    refreshRate,
+    errorMsg,
+    WorldState(WorldState),
+    configData,
+    programState,
+    menuState,) where
 
 import Graphics.Rendering.OpenGL
-import Config
+import Graphics.UI.GLUT
 
 data WTexture = WTexture
    {
@@ -47,16 +54,27 @@ data WRect = WRect
 
 data ProgramState = MainMenuState | TwoDWaveState | ThreeDWaveState
 
-data WorldState = WorldState
-   {
-      configData     :: ConfigData,
-      programState   :: ProgramState,
-      menuState      :: Maybe MenuState
-   }
-
 data MenuState = MenuState
    {
       backTexture    :: WTexture,
       twoDButton     :: WTexture,
       threeDButton   :: WTexture
    }
+
+data Config = Config
+   {
+      fontName          :: BitmapFont,
+      winHeight         :: GLdouble,
+      winWidth          :: GLdouble,
+      winSize           :: Size,
+      refreshRate       :: Int,
+      errorMsg          :: Maybe String
+   }
+
+data WorldState = WorldState
+   {
+      configData        :: Config,
+      programState      :: ProgramState,
+      menuState         :: Maybe MenuState
+   }
+

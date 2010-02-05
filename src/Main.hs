@@ -1,2 +1,3 @@
-import Config
-main = do waveSim defaultConfig
+import WaveSim
+main :: IO ()
+main = waveSim defaultConfig

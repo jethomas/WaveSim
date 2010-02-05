@@ -17,11 +17,11 @@ import Control.Monad
 import Types
 
 initWindow :: Size -> [Char] -> IO ()
-initWindow winSize winTitle = do
+initWindow wSize wTitle = do
    _ <- getArgsAndInitialize
-   initialWindowSize $= winSize
+   initialWindowSize $= wSize
    initialDisplayMode $= [DoubleBuffered]
-   _ <- createWindow winTitle
+   _ <- createWindow wTitle
    return ()
 
 initGraphics :: GLdouble -> GLdouble -> IO ()
