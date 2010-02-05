@@ -1,7 +1,7 @@
 module World
    (worldInit) where
 
-import Config
+import WaveSim
 import Types
 
 worldInit :: ConfigData -> IO (WorldState)

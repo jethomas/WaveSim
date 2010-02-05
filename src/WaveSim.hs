@@ -1,33 +1,58 @@
 module WaveSim
-   (main) where 
+   (waveSim,
+    ConfigData(ConfigData),
+    fontName,
+    winHeight,
+    winWidth,
+    winSize,
+    refreshRate,
+    defaultConfig) where
 
+import qualified Config.Dyre as Dyre
 import Graphics.UI.GLUT
-import Control.Exception
-import System.Exit
 import Data.IORef
 
 import Graphics
-import Config
 import World
 import Menu
 
+data ConfigData = ConfigData
+   {
+      fontName    :: BitmapFont,
+      winHeight   :: GLdouble,
+      winWidth    :: GLdouble,
+      winSize     :: Size,
+      refreshRate :: Int
+   }
+
+defaultConfig = ConfigData
+   {
+      fontName       = Helvetica12,
+      winHeight      = 600.0,
+      winWidth       = 800.0,
+      winSize        = Size (truncate (winWidth defaultConfig)) (truncate (winHeight defaultConfig)),
+      refreshRate    = 16
+   }
+
+confError cfgMessage error = "Error:" ++ error ++ "\n" ++ cfgMessage
+
+waveSim = Dyre.wrapMain Dyre.defaultParams
+   {
+      Dyre.projectName   = "WaveSim",
+      Dyre.showError     = confError,
+      Dyre.realMain      = main
+   }
+
 main :: ConfigData -> IO ()
 main cfg = do
-
-   Graphics.initWindow winSize "Wave Simulator"
+   Graphics.initWindow (winSize cfg) "Wave Simulator"
    Graphics.initGraphics (winWidth cfg) (winHeight cfg)
 
    worldState <- worldInit
    worldStateRef <- newIORef worldState
 
-   -- GLUT callbacks for input
-   --keyboardMouseCallback $= Just (worldInput (keysStateRef worldState))
-   --motionCallback $= Just (worldMotion (mousePosRef worldState))
-   --passiveMotionCallback $= Just (worldMotion (mousePosRef worldState))
+   -- DEBUG
    enterMainMenu worldStateRef drawMainMenu
 
    mainLoop
 
-exitMain :: IO ()
-exitMain = do
-   throwIO $ ExitSuccess
