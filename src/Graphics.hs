@@ -14,7 +14,6 @@ import Graphics.UI.SDL.Image as SDLImage
 import Graphics.UI.SDL.Video
 import Graphics.UI.SDL.Types
 import Control.Monad
-import ThemeSettings
 import Types
 
 initWindow :: Size -> [Char] -> IO ()
@@ -44,11 +43,11 @@ endDraw = do
    swapBuffers
    flush
 
-drawString :: (GLfloat, GLfloat) -> [Char] -> Color4 GLfloat -> IO ()
-drawString (x, y) string col = do
+drawString :: (GLfloat, GLfloat) -> [Char] -> Color4 GLfloat -> BitmapFont -> IO ()
+drawString (x, y) string col font = do
    color col
    currentRasterPosition $= Vertex4 x y (0.0::GLfloat) (1.0::GLfloat)
-   renderString ThemeSettings.font string
+   renderString font string
 
 loadTexture :: [Char] -> IO (WTexture)
 loadTexture path = do

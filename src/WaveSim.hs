@@ -1,5 +1,5 @@
-module Main
-   () where 
+module WaveSim
+   (main) where 
 
 import Graphics.UI.GLUT
 import Control.Exception
@@ -7,14 +7,15 @@ import System.Exit
 import Data.IORef
 
 import Graphics
-import DisplaySettings
+import Config
 import World
 import Menu
 
-main :: IO ()
-main = do
+main :: ConfigData -> IO ()
+main cfg = do
+
    Graphics.initWindow winSize "Wave Simulator"
-   Graphics.initGraphics winWidth winHeight
+   Graphics.initGraphics (winWidth cfg) (winHeight cfg)
 
    worldState <- worldInit
    worldStateRef <- newIORef worldState

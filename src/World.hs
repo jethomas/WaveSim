@@ -1,9 +1,10 @@
 module World
    (worldInit) where
 
+import Config
 import Types
 
-worldInit :: IO (WorldState)
-worldInit = do
-   return (WorldState MainMenuState Nothing)
+worldInit :: ConfigData -> IO (WorldState)
+worldInit cfg = do
+   return (WorldState cfg MainMenuState Nothing)
 
