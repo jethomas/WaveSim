@@ -1,21 +1,32 @@
 module WaveSim.Types
-   (WTexture(WTexture),
+   (Button(Button),
+    butGeometry,
+    butTex,
+    butClickTex,
+    MainMenu(MainMenu),
+    twoDButton,
+    threeDButton,
+    background,
+    twoDTextLoc,
+    threeDTextLoc,
+    Background(Background),
+    backGeometry,
+    backTex,
+    WTexture(WTexture),
     textureWidth,
     textureHeight,
     textureObject,
     WPoint(WPoint),
     xPosPoint,
     yPosPoint,
+    WPointFloat(WPointFloat),
+    xPosPointFloat,
+    yPosPointFloat,
     WRect(WRect),
     ulRectPoint,
-    urRectPoint,
-    lrRectPoint,
-    llRectPoint,
+    width,
+    height,
     ProgramState(MainMenuState,TwoDWaveState,ThreeDWaveState),
-    MenuState(MenuState),
-    backTexture,
-    twoDButton,
-    threeDButton,
     Config(Config),
     fontName,
     winHeight,
@@ -23,13 +34,35 @@ module WaveSim.Types
     winSize,
     refreshRate,
     errorMsg,
+    mainMenu,
     WorldState(WorldState),
     configData,
-    programState,
-    menuState) where
+    programState) where
 
 import Graphics.Rendering.OpenGL
 import Graphics.UI.GLUT
+
+data Button = Button
+   {
+      butGeometry    :: WRect,
+      butTex         :: Maybe WTexture,
+      butClickTex    :: Maybe WTexture
+   }
+
+data MainMenu = MainMenu
+   {
+      twoDButton     :: Button,
+      threeDButton   :: Button,
+      background     :: Background,
+      twoDTextLoc    :: WPointFloat,
+      threeDTextLoc  :: WPointFloat
+   }
+
+data Background = Background
+   {
+      backGeometry   :: WRect,
+      backTex        :: Maybe WTexture
+   }
 
 data WTexture = WTexture
    {
@@ -44,22 +77,20 @@ data WPoint = WPoint
       yPosPoint      :: GLdouble
    }
 
+data WPointFloat = WPointFloat
+   {
+      xPosPointFloat :: GLfloat,
+      yPosPointFloat :: GLfloat
+   }
+
 data WRect = WRect
    {
       ulRectPoint    :: WPoint,
-      urRectPoint    :: WPoint,
-      lrRectPoint    :: WPoint,
-      llRectPoint    :: WPoint
+      width          :: GLdouble,
+      height         :: GLdouble
    }
 
 data ProgramState = MainMenuState | TwoDWaveState | ThreeDWaveState
-
-data MenuState = MenuState
-   {
-      backTexture    :: WTexture,
-      twoDButton     :: WTexture,
-      threeDButton   :: WTexture
-   }
 
 data Config = Config
    {
@@ -68,13 +99,13 @@ data Config = Config
       winWidth          :: GLdouble,
       winSize           :: Size,
       refreshRate       :: Int,
-      errorMsg          :: Maybe String
+      errorMsg          :: Maybe String,
+      mainMenu          :: MainMenu
    }
 
 data WorldState = WorldState
    {
       configData        :: Config,
-      programState      :: ProgramState,
-      menuState         :: Maybe MenuState
+      programState      :: ProgramState
    }
 

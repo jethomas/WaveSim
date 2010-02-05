@@ -10,22 +10,41 @@ import Paths_WaveSim
 import WaveSim.Graphics
 import WaveSim.Types
 
-initMainMenu :: IO (Maybe MenuState)
-initMainMenu = do
-   backTexture' <- liftIO $ loadTexture $ getDataFileName "data/menu_back.png"
-   twoDButton' <- liftIO $ loadTexture $ getDataFileName "data/2Dbutton.png"
-   threeDButton' <- liftIO $ loadTexture $ getDataFileName "data/3Dbutton.png"
-   return (Just $ MenuState backTexture' twoDButton' threeDButton')
+initMainMenu :: Config -> IO (Config)
+initMainMenu cfg = do
+
+   let mainMenu' = mainMenu cfg
+   let twoDButton' = twoDButton mainMenu'
+   let threeDButton' = threeDButton mainMenu'
+   let background' = background mainMenu'
+
+   -- Missing butClickTex, for now
+   twoDButtonTex <- if isNothing (butTex twoDButton') == True
+                        then liftIO $ loadTexture $ getDataFileName "data/2Dbutton.png"
+                        else return $ fromJust $ butTex twoDButton'
+   threeDButtonTex <- if isNothing (butTex threeDButton') == True
+                        then liftIO $ loadTexture $ getDataFileName "data/3Dbutton.png"
+                        else return $ fromJust $ butTex threeDButton'
+   backTexture' <- if isNothing (backTex background') == True
+                        then liftIO $ loadTexture $ getDataFileName "data/menu_back.png"
+                        else return $ fromJust $ backTex background'
+   return $ cfg
+      {
+         mainMenu = mainMenu'
+            {
+               twoDButton = twoDButton' { butTex = Just twoDButtonTex },
+               threeDButton = threeDButton' { butTex = Just threeDButtonTex },
+               background = background' { backTex = Just backTexture' }
+            }
+      }
 
 enterMainMenu :: IORef WorldState -> (IORef WorldState -> IO()) -> IO ()
 enterMainMenu worldStateRef mainCallback = do
    worldState <- readIORef worldStateRef
-   menuState' <- if isNothing (menuState worldState) == True
-                  then initMainMenu
-                  else return (menuState worldState)
+   configData' <- initMainMenu (configData worldState)
 
    --- Update current ref
-   let worldState' = WorldState (configData worldState) MainMenuState menuState'
+   let worldState' = WorldState configData' MainMenuState
    writeIORef worldStateRef worldState'
 
 drawMainMenu :: IORef WorldState -> IO ()
@@ -35,25 +54,20 @@ drawMainMenu worldStateRef = do
    -- Clear the old screen
    beginDraw
 
-   -- Extra from world state
+   -- Extract from world state
    let cfgData = configData worldState
-   let menuData = fromJust $ menuState worldState
+   let menuData = mainMenu cfgData
 
-   -- Locations of visible objects
-   let backGeometry = (0, 0, winWidth cfgData, winHeight cfgData)
-   let twoDButtonGeometry = (25, (winHeight cfgData) - 80, 200, 55)
-   let threeDButtonGeometry = (25, (winHeight cfgData) - 160, 200, 55)
-   let twoDTextLocation = (58, (realToFrac (winHeight cfgData)) - 55)
-   let threeDTextLocation = (58, (realToFrac (winHeight cfgData)) - 135)
+   -- References to the texture
+   let twoDTex = fromJust $ butTex (twoDButton menuData)
+   let threeDTex = fromJust $ butTex (threeDButton menuData)
+   let menuTex = fromJust $ backTex (background menuData)
 
-   --drawRect backGeometry (Color4 0 0 0 1)
-   --drawRect twoDButtonGeometry (Color4 1 1 1 1)
-   --drawRect threeDButtonGeometry (Color4 1 1 1 1)
-   drawTexture backGeometry (backTexture menuData) 1.0
-   drawTexture twoDButtonGeometry (twoDButton menuData) 1.0
-   drawTexture threeDButtonGeometry (threeDButton menuData) 1.0
-   drawString twoDTextLocation "2-Dimensional Display" (Color4 0 0 0 1) (fontName cfgData)
-   drawString threeDTextLocation "3-Dimensional Display" (Color4 0 0 0 1) (fontName cfgData)
+   drawTexture (backGeometry (background menuData)) menuTex 1.0
+   drawTexture (butGeometry (twoDButton menuData)) twoDTex 1.0
+   drawTexture (butGeometry (threeDButton menuData)) threeDTex 1.0
+   drawString (twoDTextLoc menuData) "2-Dimensional Display" (Color4 0 0 0 1) (fontName cfgData)
+   drawString (threeDTextLoc menuData) "3-Dimensional Display" (Color4 0 0 0 1) (fontName cfgData)
 
    -- Display to screen
    endDraw

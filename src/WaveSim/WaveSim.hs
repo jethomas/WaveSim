@@ -13,12 +13,34 @@ import WaveSim.Menu
 defaultConfig :: Config
 defaultConfig = Config
    {
-      fontName          = Helvetica12,
-      winHeight         = 600.0,
-      winWidth          = 800.0,
-      winSize           = Size (truncate (winWidth defaultConfig)) (truncate (winHeight defaultConfig)),
-      refreshRate       = 16,
-      errorMsg          = Nothing
+      fontName             = Helvetica12,
+      winHeight            = 600.0,
+      winWidth             = 800.0,
+      winSize              = Size (truncate (winWidth defaultConfig)) (truncate (winHeight defaultConfig)),
+      refreshRate          = 16,
+      errorMsg             = Nothing,
+      mainMenu             = MainMenu
+         {
+            twoDButton     = Button
+               {
+                  butGeometry    = WRect { ulRectPoint = WPoint 25.0 520.0, width = 200, height = 55 },
+                  butTex         = Nothing,
+                  butClickTex    = Nothing
+               },
+            threeDButton   = Button
+               {
+                  butGeometry    = WRect { ulRectPoint = WPoint 25.0 440.0, width = 200, height = 55 },
+                  butTex         = Nothing,
+                  butClickTex    = Nothing
+               },
+            background     = Background
+               {
+                  backGeometry   = WRect { ulRectPoint = WPoint 0.0 0.0, width = 800, height = 600 },
+                  backTex        = Nothing
+               },
+            twoDTextLoc    = WPointFloat { xPosPointFloat = 38, yPosPointFloat = 547 },
+            threeDTextLoc  = WPointFloat { xPosPointFloat = 38, yPosPointFloat = 465 }
+         }
    }
 
 confError :: Config -> String -> Config
@@ -37,7 +59,7 @@ realMain cfg = do
    initWindow (winSize cfg) "Wave Simulator"
    initGraphics (winWidth cfg) (winHeight cfg)
 
-   let worldState = WorldState cfg MainMenuState Nothing
+   let worldState = WorldState cfg MainMenuState
    worldStateRef <- newIORef worldState
 
    displayCallback $= (drawMainMenu worldStateRef)
