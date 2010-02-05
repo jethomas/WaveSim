@@ -1,6 +1,14 @@
-import Config
-main = waveSim defaultConfig
+import WaveSim.WaveSim
+import WaveSim.Types
+import Graphics.UI.GLUT
+
+w = 1000
+h = 50
+
+main :: IO ()
+main = waveSim $ defaultConfig
    {
-      winHeight   = 1000,
-      winWidth    = 50
+      winHeight = w,
+      winWidth = h,
+      winSize = Size (truncate w) (truncate h)
    }

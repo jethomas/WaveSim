@@ -1,4 +1,4 @@
-module Input
+module WaveSim.Input
    (worldInput,
     worldMotion) where
 

@@ -1,4 +1,4 @@
-module Menu
+module WaveSim.Menu
    (enterMainMenu,
     drawMainMenu) where
 
@@ -6,18 +6,16 @@ import Graphics.UI.GLUT as GLUT
 import Control.Monad.State
 import Data.IORef
 import Data.Maybe
-import Graphics
-import Types
+import Paths_WaveSim
+import WaveSim.Graphics
+import WaveSim.Types
 
 initMainMenu :: IO (Maybe MenuState)
 initMainMenu = do
-{-
-   backTexture' <- liftIO $ loadTexture "data/menu_back.png"
-   twoDButton' <- liftIO $ loadTexture "data/2Dbutton.png"
-   threeDButton' <- liftIO $ loadTexture "data/3Dbutton.png"
+   backTexture' <- liftIO $ loadTexture $ getDataFileName "data/menu_back.png"
+   twoDButton' <- liftIO $ loadTexture $ getDataFileName "data/2Dbutton.png"
+   threeDButton' <- liftIO $ loadTexture $ getDataFileName "data/3Dbutton.png"
    return (Just $ MenuState backTexture' twoDButton' threeDButton')
--}
-   return Nothing
 
 enterMainMenu :: IORef WorldState -> (IORef WorldState -> IO()) -> IO ()
 enterMainMenu worldStateRef mainCallback = do

@@ -10,9 +10,36 @@ maintainer:          avi.thomas@gmail.com
 build-depends:       base
 build-type:          Simple
 stability:           Alpha
+data-files:          data/*.png
 
-executable:          WaveSim
-main-is:             Main.hs
-ghc-options:         -Wall
-hs-source-dirs:      src
-build-depends:       OpenGL >= 2.4, GLUT >= 2.2.2, base > 4, SDL >= 0.5.9, SDL-image >= 0.5.2, mtl >= 1.1, haskell98, dyre >= 0.8.2
+library
+   hs-source-dirs: src
+   exposed-modules:
+      WaveSim
+      WaveSim.Types
+      WaveSim.WaveSim
+      WaveSim.Graphics
+   other-modules:
+      Paths_WaveSim
+      WaveSim.Menu
+
+executable wavesim
+   main-is: Main.hs
+   ghc-options: -Wall
+   hs-source-dirs: src
+   build-depends: Cabal >= 1.6
+   build-depends: OpenGL >= 2.4
+   build-depends: GLUT >= 2.2.2
+   build-depends: base >= 4
+   build-depends: SDL >= 0.5.9
+   build-depends: SDL-image >= 0.5.2
+   build-depends: mtl >= 1.1
+   build-depends: haskell98
+   build-depends: dyre >= 0.8.2
+   other-modules:
+      WaveSim
+      WaveSim.Types
+      WaveSim.WaveSim
+      Paths_WaveSim
+      WaveSim.Menu
+      WaveSim.Graphics

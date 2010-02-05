@@ -1,4 +1,4 @@
-module Types
+module WaveSim.Types
    (WTexture(WTexture),
     textureWidth,
     textureHeight,

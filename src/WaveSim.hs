@@ -1,47 +1,8 @@
 module WaveSim
-   (waveSim,
-    defaultConfig) where
+   (module WaveSim.Types,
+    module WaveSim.WaveSim,
+    module WaveSim.Graphics) where
 
-import qualified Config.Dyre as Dyre
-import Graphics.UI.GLUT
-import Data.IORef
-
-import Graphics
-import Types
-import Menu
-
-defaultConfig :: Config
-defaultConfig = Config
-   {
-      fontName          = Helvetica12,
-      winHeight         = 600.0,
-      winWidth          = 800.0,
-      winSize           = Size (truncate (winWidth defaultConfig)) (truncate (winHeight defaultConfig)),
-      refreshRate       = 16,
-      errorMsg          = Nothing
-   }
-
-confError :: Config -> String -> Config
-confError cfg errs = cfg {errorMsg = Just $ "Error:" ++ errs ++ "\n"}
-
-waveSim :: Config -> IO ()
-waveSim = Dyre.wrapMain $ Dyre.defaultParams
-   {
-      Dyre.projectName  = "WaveSim",
-      Dyre.showError    = confError,
-      Dyre.realMain     = realMain
-   }
-
-realMain :: Config -> IO ()
-realMain cfg = do
-   Graphics.initWindow (winSize cfg) "Wave Simulator"
-   Graphics.initGraphics (winWidth cfg) (winHeight cfg)
-
-   let worldState = WorldState cfg MainMenuState Nothing
-   worldStateRef <- newIORef worldState
-
-   -- DEBUG
-   enterMainMenu worldStateRef drawMainMenu
-
-   mainLoop
-
+import WaveSim.Types
+import WaveSim.WaveSim
+import WaveSim.Graphics

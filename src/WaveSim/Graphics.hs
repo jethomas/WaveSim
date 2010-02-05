@@ -1,4 +1,4 @@
-module Graphics
+module WaveSim.Graphics
    (initWindow,
     initGraphics,
     beginDraw,
@@ -14,7 +14,7 @@ import Graphics.UI.SDL.Image as SDLImage
 import Graphics.UI.SDL.Video
 import Graphics.UI.SDL.Types
 import Control.Monad
-import Types
+import WaveSim.Types
 
 initWindow :: Size -> [Char] -> IO ()
 initWindow wSize wTitle = do
@@ -49,9 +49,10 @@ drawString (x, y) string col font = do
    currentRasterPosition $= Vertex4 x y (0.0::GLfloat) (1.0::GLfloat)
    renderString font string
 
-loadTexture :: [Char] -> IO (WTexture)
-loadTexture path = do
+loadTexture :: IO (FilePath) -> IO (WTexture)
+loadTexture fpath = do
    -- Use SDL to load the image
+   path <- fpath
    surface <- SDLImage.loadTyped path SDLImage.PNG
 
    let width = fromIntegral (surfaceGetWidth surface)
