@@ -38,8 +38,8 @@ initMainMenu cfg = do
             }
       }
 
-enterMainMenu :: IORef WorldState -> (IORef WorldState -> IO()) -> IO ()
-enterMainMenu worldStateRef mainCallback = do
+enterMainMenu :: IORef WorldState -> IO ()
+enterMainMenu worldStateRef = do
    worldState <- readIORef worldStateRef
    configData' <- initMainMenu (configData worldState)
 
@@ -50,9 +50,6 @@ enterMainMenu worldStateRef mainCallback = do
 drawMainMenu :: IORef WorldState -> IO ()
 drawMainMenu worldStateRef = do
    worldState <- readIORef worldStateRef
-
-   -- Clear the old screen
-   beginDraw
 
    -- Extract from world state
    let cfgData = configData worldState
@@ -68,7 +65,4 @@ drawMainMenu worldStateRef = do
    drawTexture (butGeometry (threeDButton menuData)) threeDTex 1.0
    drawString (twoDTextLoc menuData) "2-Dimensional Display" (Color4 0 0 0 1) (fontName cfgData)
    drawString (threeDTextLoc menuData) "3-Dimensional Display" (Color4 0 0 0 1) (fontName cfgData)
-
-   -- Display to screen
-   endDraw
 

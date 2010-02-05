@@ -19,6 +19,7 @@ library
       WaveSim.Types
       WaveSim.WaveSim
       WaveSim.Graphics
+      WaveSim.Program
    other-modules:
       Paths_WaveSim
       WaveSim.Menu
@@ -43,3 +44,4 @@ executable wavesim
       Paths_WaveSim
       WaveSim.Menu
       WaveSim.Graphics
+      WaveSim.Program

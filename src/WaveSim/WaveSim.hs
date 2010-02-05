@@ -7,8 +7,8 @@ import Graphics.UI.GLUT
 import Data.IORef
 
 import WaveSim.Graphics
+import WaveSim.Program
 import WaveSim.Types
-import WaveSim.Menu
 
 defaultConfig :: Config
 defaultConfig = Config
@@ -38,8 +38,8 @@ defaultConfig = Config
                   backGeometry   = WRect { ulRectPoint = WPoint 0.0 0.0, width = 800, height = 600 },
                   backTex        = Nothing
                },
-            twoDTextLoc    = WPointFloat { xPosPointFloat = 38, yPosPointFloat = 547 },
-            threeDTextLoc  = WPointFloat { xPosPointFloat = 38, yPosPointFloat = 465 }
+            twoDTextLoc    = WPointFloat { xPosPointFloat = 50, yPosPointFloat = 543 },
+            threeDTextLoc  = WPointFloat { xPosPointFloat = 50, yPosPointFloat = 465 }
          }
    }
 
@@ -62,10 +62,8 @@ realMain cfg = do
    let worldState = WorldState cfg MainMenuState
    worldStateRef <- newIORef worldState
 
-   displayCallback $= (drawMainMenu worldStateRef)
-
-   -- DEBUG
-   enterMainMenu worldStateRef drawMainMenu
+   mainCallback worldStateRef
+   displayCallback $= (mainDrawCallback worldStateRef)
 
    mainLoop
 
