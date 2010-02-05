@@ -38,17 +38,23 @@ drawMainMenu worldStateRef = do
    -- Clear the old screen
    beginDraw
 
-   -- Locations of visible objects
+   -- Extra from world state
    let cfgData = configData worldState
+   let menuData = fromJust $ menuState worldState
+
+   -- Locations of visible objects
    let backGeometry = (0, 0, winWidth cfgData, winHeight cfgData)
    let twoDButtonGeometry = (25, (winHeight cfgData) - 80, 200, 55)
    let threeDButtonGeometry = (25, (winHeight cfgData) - 160, 200, 55)
    let twoDTextLocation = (58, (realToFrac (winHeight cfgData)) - 55)
    let threeDTextLocation = (58, (realToFrac (winHeight cfgData)) - 135)
 
-   drawRect backGeometry (Color4 0 0 0 1)
-   drawRect twoDButtonGeometry (Color4 1 1 1 1)
-   drawRect threeDButtonGeometry (Color4 1 1 1 1)
+   --drawRect backGeometry (Color4 0 0 0 1)
+   --drawRect twoDButtonGeometry (Color4 1 1 1 1)
+   --drawRect threeDButtonGeometry (Color4 1 1 1 1)
+   drawTexture backGeometry (backTexture menuData) 1.0
+   drawTexture twoDButtonGeometry (twoDButton menuData) 1.0
+   drawTexture threeDButtonGeometry (threeDButton menuData) 1.0
    drawString twoDTextLocation "2-Dimensional Display" (Color4 0 0 0 1) (fontName cfgData)
    drawString threeDTextLocation "3-Dimensional Display" (Color4 0 0 0 1) (fontName cfgData)
 

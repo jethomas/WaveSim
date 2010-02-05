@@ -64,10 +64,13 @@ loadTexture fpath = do
    textureBinding Texture2D $= Just textureObj
    textureWrapMode Texture2D S $= (Repeated, Repeat)
    textureWrapMode Texture2D T $= (Repeated, Repeat)
-   textureFilter Texture2D $= ((Nearest, Nothing), Nearest)
+   textureFilter Texture2D $= ((Linear', Nothing), Linear')
    surfacePixels <- surfaceGetPixels surface
+   bytesPerPixel <- pixelFormatGetBytesPerPixel (surfaceGetPixelFormat surface)
 
-   let pixelData = PixelData RGBA UnsignedByte surfacePixels
+   let pixelFormat = if bytesPerPixel == 3 then RGB else RGBA
+   let pixelData = PixelData pixelFormat UnsignedByte surfacePixels
+
    texImage2D Nothing NoProxy 0 RGBA' size 0 pixelData
 
    -- Free the SDL surface

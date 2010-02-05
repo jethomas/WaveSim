@@ -26,7 +26,7 @@ module WaveSim.Types
     WorldState(WorldState),
     configData,
     programState,
-    menuState,) where
+    menuState) where
 
 import Graphics.Rendering.OpenGL
 import Graphics.UI.GLUT
