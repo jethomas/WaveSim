@@ -40,6 +40,8 @@ realMain cfg = do
    let worldState = WorldState cfg MainMenuState Nothing
    worldStateRef <- newIORef worldState
 
+   displayCallback $= (drawMainMenu worldStateRef)
+
    -- DEBUG
    enterMainMenu worldStateRef drawMainMenu
 

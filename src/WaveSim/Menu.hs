@@ -28,9 +28,6 @@ enterMainMenu worldStateRef mainCallback = do
    let worldState' = WorldState (configData worldState) MainMenuState menuState'
    writeIORef worldStateRef worldState'
 
-   -- XXX DEBUG
-   addTimerCallback 50 (mainCallback worldStateRef)
-
 drawMainMenu :: IORef WorldState -> IO ()
 drawMainMenu worldStateRef = do
    worldState <- readIORef worldStateRef
@@ -60,7 +57,4 @@ drawMainMenu worldStateRef = do
 
    -- Display to screen
    endDraw
-
-   -- XXX DEBUG
-   addTimerCallback 50 (drawMainMenu worldStateRef)
 
