@@ -8,6 +8,7 @@ import Data.IORef
 
 import WaveSim.Graphics
 import WaveSim.Program
+import WaveSim.Input
 import WaveSim.Types
 
 defaultConfig :: Config
@@ -21,17 +22,20 @@ defaultConfig = Config
       errorMsg             = Nothing,
       mainMenu             = MainMenu
          {
+            menuInitComplete = False,
             twoDButton     = Button
                {
                   butGeometry    = WRect { ulRectPoint = WPoint 25.0 520.0, width = 200, height = 55 },
                   butTex         = Nothing,
-                  butClickTex    = Nothing
+                  butClickTex    = Nothing,
+                  butClickCall   = Nothing
                },
             threeDButton   = Button
                {
                   butGeometry    = WRect { ulRectPoint = WPoint 25.0 440.0, width = 200, height = 55 },
                   butTex         = Nothing,
-                  butClickTex    = Nothing
+                  butClickTex    = Nothing,
+                  butClickCall   = Nothing
                },
             background     = Background
                {
@@ -59,8 +63,12 @@ realMain cfg = do
    initWindow (winSize cfg) "Wave Simulator"
    initGraphics (winWidth cfg) (winHeight cfg)
 
-   let worldState = WorldState cfg MainMenuState
-   worldStateRef <- newIORef worldState
+   let inputState = InputState (MouseInfo 0 0 False 0 0)
+   worldStateRef <- newIORef (WorldState cfg MainMenuState [] inputState)
+
+   keyboardMouseCallback $= Just (worldInput worldStateRef)
+   motionCallback $= Just (worldMotion worldStateRef)
+   passiveMotionCallback $= Just (worldMotion worldStateRef)
 
    mainCallback worldStateRef
    displayCallback $= (mainDrawCallback worldStateRef)

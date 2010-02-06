@@ -8,7 +8,16 @@ import Data.IORef
 import Data.Maybe
 import Paths_WaveSim
 import WaveSim.Graphics
+import WaveSim.Widgets
 import WaveSim.Types
+
+-- DEBUG
+enterTwoD :: IORef WorldState -> IO ()
+enterTwoD worldStateRef = putStrLn "Entering 2d."
+
+enterThreeD :: IORef WorldState -> IO ()
+enterThreeD worldStateRef = putStrLn "Entering 3d."
+-- END DEBUG
 
 initMainMenu :: Config -> IO (Config)
 initMainMenu cfg = do
@@ -32,8 +41,17 @@ initMainMenu cfg = do
       {
          mainMenu = mainMenu'
             {
-               twoDButton = twoDButton' { butTex = Just twoDButtonTex },
-               threeDButton = threeDButton' { butTex = Just threeDButtonTex },
+               menuInitComplete = True,
+               twoDButton = twoDButton'
+                  {
+                     butTex = Just twoDButtonTex,
+                     butClickCall = Just enterTwoD
+                  },
+               threeDButton = threeDButton'
+                  {
+                     butTex = Just threeDButtonTex,
+                     butClickCall = Just enterThreeD
+                  },
                background = background' { backTex = Just backTexture' }
             }
       }
@@ -41,11 +59,14 @@ initMainMenu cfg = do
 enterMainMenu :: IORef WorldState -> IO ()
 enterMainMenu worldStateRef = do
    worldState <- readIORef worldStateRef
-   configData' <- initMainMenu (configData worldState)
 
-   --- Update current ref
-   let worldState' = WorldState configData' MainMenuState
-   writeIORef worldStateRef worldState'
+   -- Only initialize the main menu if we are displaying for the first time
+   let initMenu = do newcfg <- initMainMenu (configData worldState)
+                     writeIORef worldStateRef (worldState {configData = newcfg})
+                     newButton worldStateRef (twoDButton (mainMenu newcfg))
+                     newButton worldStateRef (threeDButton (mainMenu newcfg))
+
+   unless (menuInitComplete (mainMenu (configData worldState))) initMenu
 
 drawMainMenu :: IORef WorldState -> IO ()
 drawMainMenu worldStateRef = do

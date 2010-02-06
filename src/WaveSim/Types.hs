@@ -3,7 +3,9 @@ module WaveSim.Types
     butGeometry,
     butTex,
     butClickTex,
+    butClickCall,
     MainMenu(MainMenu),
+    menuInitComplete,
     twoDButton,
     threeDButton,
     background,
@@ -37,57 +39,70 @@ module WaveSim.Types
     mainMenu,
     WorldState(WorldState),
     configData,
-    programState) where
+    programState,
+    mouseHandlers,
+    inputStateRef,
+    MouseInfo(MouseInfo),
+    mouseX,
+    mouseY,
+    leftMouseDown,
+    prevMouseXDown,
+    prevMouseYDown,
+    InputState(InputState),
+    mouseInfo) where
 
 import Graphics.Rendering.OpenGL
 import Graphics.UI.GLUT
+import Data.IORef
 
 data Button = Button
    {
-      butGeometry    :: WRect,
-      butTex         :: Maybe WTexture,
-      butClickTex    :: Maybe WTexture
+      butGeometry       :: WRect,
+      butTex            :: Maybe WTexture,
+      butClickTex       :: Maybe WTexture,
+      butClickCall      :: Maybe (IORef WorldState -> IO ())
    }
 
 data MainMenu = MainMenu
    {
-      twoDButton     :: Button,
-      threeDButton   :: Button,
-      background     :: Background,
-      twoDTextLoc    :: WPointFloat,
-      threeDTextLoc  :: WPointFloat
+      menuInitComplete  :: Bool,
+      twoDButton        :: Button,
+      threeDButton      :: Button,
+      background        :: Background,
+      twoDTextLoc       :: WPointFloat,
+      threeDTextLoc     :: WPointFloat
    }
 
 data Background = Background
    {
-      backGeometry   :: WRect,
-      backTex        :: Maybe WTexture
+      backGeometry      :: WRect,
+      backTex           :: Maybe WTexture
    }
 
 data WTexture = WTexture
    {
-      textureWidth   :: GLsizei,
-      textureHeight  :: GLsizei,
-      textureObject  :: TextureObject
+      textureWidth      :: GLsizei,
+      textureHeight     :: GLsizei,
+      textureObject     :: TextureObject
    }
 
 data WPoint = WPoint
    {
-      xPosPoint      :: GLdouble,
-      yPosPoint      :: GLdouble
+      xPosPoint         :: GLdouble,
+      yPosPoint         :: GLdouble
    }
 
 data WPointFloat = WPointFloat
    {
-      xPosPointFloat :: GLfloat,
-      yPosPointFloat :: GLfloat
+      xPosPointFloat    :: GLfloat,
+      yPosPointFloat    :: GLfloat
    }
 
 data WRect = WRect
    {
-      ulRectPoint    :: WPoint,
-      width          :: GLdouble,
-      height         :: GLdouble
+      ulRectPoint       :: WPoint,
+      width             :: GLdouble,
+      height            :: GLdouble
    }
 
 data ProgramState = MainMenuState | TwoDWaveState | ThreeDWaveState
@@ -106,6 +121,22 @@ data Config = Config
 data WorldState = WorldState
    {
       configData        :: Config,
-      programState      :: ProgramState
+      programState      :: ProgramState,
+      mouseHandlers     :: [IO ()],
+      inputStateRef     :: InputState
+   }
+
+data MouseInfo = MouseInfo
+   {
+      mouseX            :: Int,
+      mouseY            :: Int,
+      leftMouseDown     :: Bool,
+      prevMouseXDown    :: Int,
+      prevMouseYDown    :: Int
+   }
+
+data InputState = InputState
+   {
+      mouseInfo         :: MouseInfo
    }
 
