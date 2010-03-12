@@ -23,6 +23,9 @@ library
    other-modules:
       Paths_WaveSim
       WaveSim.Menu
+      WaveSim.TwoD
+      WaveSim.Input
+      WaveSim.Widgets
 
 executable wavesim
    main-is: Main.hs
@@ -47,3 +50,5 @@ executable wavesim
       WaveSim.Graphics
       WaveSim.Program
       WaveSim.TwoD
+      WaveSim.Input
+      WaveSim.Widgets
