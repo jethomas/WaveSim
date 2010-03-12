@@ -78,7 +78,13 @@ drawTwoD worldStateRef = do
        f x = ((fromJust (function twoDData)) (g x)) * (fromIntegral (amplitude twoDData))
        particleList = map (\x -> (x, f x)) xList
 
+   let firstParticleX = (realToFrac (fst (head particleList))) + 50
+       yPadding = 10
+       thickness = 2
+   -- Background and some rudimentary axis
    drawRect (0.0, 0.0, winWidth cfgData, winHeight cfgData) (Color4 1 1 1 1)
+   drawRect (firstParticleX - texCenterX, ((winHeight cfgData) / 2) - (thickness / 2), winWidth cfgData, thickness) (Color4 1 0 0 1)
+   drawRect (firstParticleX - (thickness / 2), yPadding, thickness, (winHeight cfgData) - (yPadding * 2)) (Color4 0 1 0 1)
    mapM_ (\(x, y) -> drawTexture (generateGeometry (realToFrac x + 50) (realToFrac y)) tex 1.0) particleList
 
    let cfgData' = cfgData {twoD = twoDData {lastTime = return (currentTime), time = time'}}

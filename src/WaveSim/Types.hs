@@ -1,6 +1,3 @@
-{-# LANGUAGE ExistentialQuantification #-}
-{-# LANGUAGE ImpredicativeTypes #-}
-
 module WaveSim.Types
    (Button(Button),
     butGeometry,
@@ -88,7 +85,7 @@ data TwoDWave = TwoDWave
       particleTex       :: Maybe WTexture,
       time              :: Double,
       lastTime          :: IO UTCTime,
-      function          :: Maybe (forall a. (Floating a) => a -> a)
+      function          :: Maybe (Double -> Double)
    }
 
 data MainMenu = MainMenu
