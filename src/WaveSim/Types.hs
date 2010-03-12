@@ -1,3 +1,6 @@
+{-# LANGUAGE ExistentialQuantification #-}
+{-# LANGUAGE ImpredicativeTypes #-}
+
 module WaveSim.Types
    (Button(Button),
     butGeometry,
@@ -37,6 +40,7 @@ module WaveSim.Types
     refreshRate,
     errorMsg,
     mainMenu,
+    twoD,
     WorldState(WorldState),
     configData,
     programState,
@@ -49,11 +53,22 @@ module WaveSim.Types
     prevMouseXDown,
     prevMouseYDown,
     InputState(InputState),
-    mouseInfo) where
+    mouseInfo,
+    TwoDWave(TwoDWave),
+    twoDInitComplete,
+    amplitude,
+    omega,
+    particlesToShow,
+    cyclesToShow,
+    particleTex,
+    time,
+    lastTime,
+    function) where
 
 import Graphics.Rendering.OpenGL
 import Graphics.UI.GLUT
 import Data.IORef
+import Data.Time.Clock
 
 data Button = Button
    {
@@ -61,6 +76,19 @@ data Button = Button
       butTex            :: Maybe WTexture,
       butClickTex       :: Maybe WTexture,
       butClickCall      :: Maybe (IORef WorldState -> IO ())
+   }
+
+data TwoDWave = TwoDWave
+   {
+      twoDInitComplete  :: Bool,
+      amplitude         :: Int,        -- Just pixels
+      omega             :: Double,     -- This is in rad/s
+      particlesToShow   :: Double,     -- Per 2pi
+      cyclesToShow      :: Double,     -- The number of complete wave cycles to show
+      particleTex       :: Maybe WTexture,
+      time              :: Double,
+      lastTime          :: IO UTCTime,
+      function          :: Maybe (forall a. (Floating a) => a -> a)
    }
 
 data MainMenu = MainMenu
@@ -105,7 +133,7 @@ data WRect = WRect
       height            :: GLdouble
    }
 
-data ProgramState = MainMenuState | TwoDWaveState | ThreeDWaveState
+data ProgramState = MainMenuState | TwoDWaveState | ThreeDWaveState deriving (Eq)
 
 data Config = Config
    {
@@ -115,7 +143,8 @@ data Config = Config
       winSize           :: Size,
       refreshRate       :: Int,
       errorMsg          :: Maybe String,
-      mainMenu          :: MainMenu
+      mainMenu          :: MainMenu,
+      twoD              :: TwoDWave
    }
 
 data WorldState = WorldState

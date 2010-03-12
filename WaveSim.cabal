@@ -37,6 +37,7 @@ executable wavesim
    build-depends: mtl >= 1.1
    build-depends: haskell98
    build-depends: dyre >= 0.8.2
+   build-depends: time
    other-modules:
       WaveSim
       WaveSim.Types
@@ -45,3 +46,4 @@ executable wavesim
       WaveSim.Menu
       WaveSim.Graphics
       WaveSim.Program
+      WaveSim.TwoD

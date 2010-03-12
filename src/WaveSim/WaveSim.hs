@@ -44,6 +44,18 @@ defaultConfig = Config
                },
             twoDTextLoc    = WPointFloat { xPosPointFloat = 50, yPosPointFloat = 543 },
             threeDTextLoc  = WPointFloat { xPosPointFloat = 50, yPosPointFloat = 465 }
+         },
+      twoD                 = TwoDWave
+         {
+            twoDInitComplete = False,
+            amplitude = 100,
+            omega = pi / 2.0,
+            particlesToShow = 16.0,
+            cyclesToShow = 2.0,
+            particleTex = Nothing,
+            time = 0,
+            lastTime = undefined,
+            function = Just sin
          }
    }
 

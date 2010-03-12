@@ -7,6 +7,7 @@ import Data.IORef
 import WaveSim.Graphics
 import WaveSim.Types
 import WaveSim.Menu
+import WaveSim.TwoD
 
 mainDrawCallback :: IORef WorldState -> IO ()
 mainDrawCallback worldStateRef = do
@@ -15,7 +16,7 @@ mainDrawCallback worldStateRef = do
    beginDraw
    case programState worldState of
       MainMenuState -> drawMainMenu worldStateRef
-      TwoDWaveState -> print "Not implemented..."
+      TwoDWaveState -> drawTwoD worldStateRef
       ThreeDWaveState -> print "Not implemented..."
    endDraw
 
@@ -24,10 +25,9 @@ mainCallback :: IORef WorldState -> IO ()
 mainCallback worldStateRef = do
    worldState <- readIORef worldStateRef
 
-   -- DEBUG
    case programState worldState of
-      MainMenuState -> enterMainMenu worldStateRef
-      TwoDWaveState  -> print "Not implemented..."
+      MainMenuState -> runMainMenu worldStateRef
+      TwoDWaveState  -> runTwoD worldStateRef
       ThreeDWaveState -> print "Not implemented..."
 
    addTimerCallback (refreshRate (configData worldState)) (mainCallback worldStateRef)

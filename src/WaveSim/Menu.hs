@@ -1,5 +1,5 @@
 module WaveSim.Menu
-   (enterMainMenu,
+   (runMainMenu,
     drawMainMenu) where
 
 import Graphics.UI.GLUT as GLUT
@@ -10,11 +10,9 @@ import Paths_WaveSim
 import WaveSim.Graphics
 import WaveSim.Widgets
 import WaveSim.Types
+import WaveSim.TwoD
 
 -- DEBUG
-enterTwoD :: IORef WorldState -> IO ()
-enterTwoD worldStateRef = putStrLn "Entering 2d."
-
 enterThreeD :: IORef WorldState -> IO ()
 enterThreeD worldStateRef = putStrLn "Entering 3d."
 -- END DEBUG
@@ -45,7 +43,7 @@ initMainMenu cfg = do
                twoDButton = twoDButton'
                   {
                      butTex = Just twoDButtonTex,
-                     butClickCall = Just enterTwoD
+                     butClickCall = Just runTwoD
                   },
                threeDButton = threeDButton'
                   {
@@ -56,8 +54,8 @@ initMainMenu cfg = do
             }
       }
 
-enterMainMenu :: IORef WorldState -> IO ()
-enterMainMenu worldStateRef = do
+runMainMenu :: IORef WorldState -> IO ()
+runMainMenu worldStateRef = do
    worldState <- readIORef worldStateRef
 
    -- Only initialize the main menu if we are displaying for the first time
